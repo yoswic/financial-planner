@@ -1717,18 +1717,20 @@ function renderPeriodBar(section) {
   }
 
   const amountEl = document.getElementById(`pw-amount-${section}`);
-  let amountText = `${formatRp(periodSpent)} / ${formatRp(effectiveLimit)}`;
+  let amountHTML = `${formatRp(periodSpent)} / ${formatRp(effectiveLimit)}`;
   if(prevBalance !== 0 && prevLimit > 0) {
+    const carryColor = prevBalance > 0 ? 'var(--green)' : 'var(--red)';
+    const carrySign = prevBalance > 0 ? '+' : '';
     const carryLabel = prevBalance > 0
       ? `+${formatRp(prevBalance)} sisa periode lalu`
-      : `${formatRp(prevBalance)} defisit periode lalu`;
-    amountText += ` (${carryLabel})`;
+      : `-${formatRp(Math.abs(prevBalance))} defisit periode lalu`;
+    amountHTML += ` <span style="color:${carryColor};font-size:11px;">(${carryLabel})</span>`;
   }
 
   document.getElementById(`pw-label-${section}`).textContent = labelText;
   document.getElementById(`pw-fill-${section}`).style.width = spentPct+'%';
   document.getElementById(`pw-fill-${section}`).style.background = color;
-  if(amountEl) amountEl.textContent = amountText;
+  if(amountEl) amountEl.innerHTML = amountHTML;
 }
 
 // ═══════════════════════════════════════════════════════
